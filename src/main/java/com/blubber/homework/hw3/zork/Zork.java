@@ -1,9 +1,8 @@
 package com.blubber.homework.hw3.zork;
 
-import com.blubber.homework.hw3.zork.levels.BattleRoom;
 import com.blubber.homework.hw3.zork.levels.Level;
-import com.blubber.homework.hw3.zork.levels.Room;
-import com.blubber.homework.hw3.zork.utilities.LevelBuilder;
+import com.blubber.homework.hw3.zork.utilities.ZorkCommandHandler;
+import com.blubber.homework.hw3.zork.utilities.enums.Command;
 
 import java.util.Scanner;
 
@@ -23,19 +22,14 @@ public class Zork {
 
     public void run(){
         while(isRunning()){
+            if (quit) { break; }
             userInput = scanner.nextLine();
-            if (userInput.compareTo("quit") == 0){
-                System.out.println("Quitting game...");
-                quitGame();
-            };
-            if (isRunning()){
-                System.out.println(userInput);
-            }
+            Command inputCommand = ZorkCommandHandler.getCommand(userInput);
+            quit = ZorkCommandHandler.handleCommand(inputCommand);
         }
     }
 
     public boolean isRunning(){ return !quit; }
-    public void quitGame(){ this.quit = true; }
 
     public void progressLevel(Level nextLevel){ this.currentLevel = nextLevel;}
 

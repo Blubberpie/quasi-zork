@@ -1,4 +1,4 @@
-package com.blubber.homework.hw3.zork.utilities;
+package com.blubber.homework.hw3.zork.utilities.builders;
 
 import com.blubber.homework.hw3.zork.levels.Level;
 import com.blubber.homework.hw3.zork.levels.Room;
