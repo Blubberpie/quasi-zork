@@ -24,8 +24,9 @@ public class Zork {
         while(isRunning()){
             if (quit) { break; }
             userInput = scanner.nextLine();
-            Command inputCommand = ZorkCommandHandler.getCommand(userInput);
-            quit = ZorkCommandHandler.handleCommand(inputCommand);
+            String[] userArgs = userInput.split(" ");
+            Command inputCommand = ZorkCommandHandler.getCommand(userArgs[0]);
+            quit = ZorkCommandHandler.handleCommand(inputCommand, userArgs);
         }
     }
 
