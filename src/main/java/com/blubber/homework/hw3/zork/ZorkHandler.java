@@ -3,11 +3,11 @@ package com.blubber.homework.hw3.zork;
 import com.blubber.homework.hw3.zork.utilities.enums.Command;
 import com.blubber.homework.hw3.zork.utilities.enums.Direction;
 
-public final class ZorkBrain {
+public final class ZorkHandler {
 
     private Traverser traverser = Traverser.getInstance();
 
-    private ZorkBrain(){}
+    private ZorkHandler(){}
 
     public Command getCommand(String userInput){
         for (Command myCommand: Command.values()){
@@ -29,7 +29,7 @@ public final class ZorkBrain {
                 return false;
 
             case TAKE:
-                take();
+                traverser.take();
                 return false;
 
             case DROP:
@@ -102,10 +102,6 @@ public final class ZorkBrain {
         }
     }
 
-    private void take(){
-        System.out.println("in take");
-    }
-
     private void drop(String item){
         System.out.println("in drop: " + item);
     }
@@ -126,7 +122,7 @@ public final class ZorkBrain {
         // todo: save state maybe?
     }
 
-    private static final ZorkBrain ZORK_COMMAND_HANDLER = new ZorkBrain();
+    private static final ZorkHandler ZORK_COMMAND_HANDLER = new ZorkHandler();
 
-    public static ZorkBrain getInstance(){ return ZORK_COMMAND_HANDLER; }
+    public static ZorkHandler getInstance(){ return ZORK_COMMAND_HANDLER; }
 }

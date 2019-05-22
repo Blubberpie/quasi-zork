@@ -2,6 +2,7 @@ package com.blubber.homework.hw3.zork;
 
 import com.blubber.homework.hw3.zork.entities.Mob;
 import com.blubber.homework.hw3.zork.entities.Player;
+import com.blubber.homework.hw3.zork.items.Item;
 import com.blubber.homework.hw3.zork.items.Weapon;
 import com.blubber.homework.hw3.zork.levels.BattleRoom;
 import com.blubber.homework.hw3.zork.levels.Level;
@@ -36,6 +37,20 @@ public final class Traverser {
             System.out.println("Entered room to the " + direction.toString().toLowerCase() + ".");
         }else{
             System.out.println("There is no door to the " + direction.toString().toLowerCase() + ".");
+        }
+    }
+
+    public void take(){
+        if (LootRoom.class.isAssignableFrom(currentRoom.getClass())){
+            Item roomItem = ((LootRoom) currentRoom).pickUpItem();
+            if (!(roomItem == null)){
+                player.addWeapon((Weapon) roomItem);
+                System.out.println("You picked up the " + roomItem.getName() + "!");
+            }else{
+                System.out.println("There is nothing to take from this room!");
+            }
+        }else{
+            System.out.println("You cannot take anything from a battle room!");
         }
     }
 

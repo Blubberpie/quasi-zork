@@ -9,7 +9,7 @@ public class Zork {
     private Scanner scanner;
     private String userInput;
     private boolean quit;
-    private ZorkBrain zorkBrain = ZorkBrain.getInstance();
+    private ZorkHandler zorkHandler = ZorkHandler.getInstance();
 
     public Zork(){
         scanner = new Scanner(System.in);
@@ -19,14 +19,14 @@ public class Zork {
 
     public void run(){
         displayWelcomeMessage();
-        zorkBrain.handleCommand(Command.HELP, null);
+        zorkHandler.handleCommand(Command.HELP, null);
         while(isRunning()){
             if (quit) { break; }
             System.out.print("Player action> ");
             userInput = scanner.nextLine();
             String[] userArgs = userInput.split(" ");
-            Command inputCommand = zorkBrain.getCommand(userArgs[0]);
-            quit = zorkBrain.handleCommand(inputCommand, userArgs);
+            Command inputCommand = zorkHandler.getCommand(userArgs[0]);
+            quit = zorkHandler.handleCommand(inputCommand, userArgs);
         }
     }
 
