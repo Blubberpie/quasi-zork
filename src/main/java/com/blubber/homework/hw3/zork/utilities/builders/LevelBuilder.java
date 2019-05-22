@@ -34,5 +34,10 @@ public class LevelBuilder{
         return this;
     }
 
+    public LevelBuilder setName(String name){
+        level.setName(name);
+        return this;
+    }
+
     public Level getLevel(){ return level; }
 }

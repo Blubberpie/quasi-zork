@@ -5,11 +5,12 @@ import com.blubber.homework.hw3.zork.entities.Mob;
 public class BattleRoom extends Room {
 
     private Mob mob;
-    private boolean defeated;
+    private boolean defeated = false;
 
     public void setMob(Mob mob){ this.mob = mob; }
-    public void setDefeatStatus(){
-    }
+    public void setDefeated(){ defeated = true; }
 
     public Mob getMob() { return mob; }
+
+    public boolean isDefeated() { return defeated; }
 }

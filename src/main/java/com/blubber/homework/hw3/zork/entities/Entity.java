@@ -18,11 +18,14 @@ public abstract class Entity {
         alive = true;
     }
 
-    public abstract void attack();
+//    public abstract void attack();
 
     public void decrementHealth(double decrementValue){
         health -= decrementValue;
-        if (health <= 0.0) kill();
+        if (health <= 0.0) {
+            kill();
+            setHealth(0.0);
+        }
     }
     public void incrementHealth(double incrementValue){
         this.health += incrementValue;

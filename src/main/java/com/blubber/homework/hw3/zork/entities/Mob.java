@@ -6,11 +6,13 @@ public class Mob extends Entity {
 
     private double hitProbability;
 
-    public void attack(){
-
-    }
+//    public void attack(){
+//
+//    }
 
     public void setHitProbability(double hitProbability) {
         this.hitProbability = hitProbability;
     }
+
+    public double getHitProbability() { return hitProbability; }
 }

@@ -33,33 +33,11 @@ public final class ZorkHandler {
                 return false;
 
             case DROP:
-                if (args.length == 1){
-                    System.out.println("Please specify an item to drop!");
-                    return false;
-                }else if(args.length > 2){
-                    System.out.println("Too many arguments!");
-                    return false;
-                }
-                drop(args[1]);
+                drop(args);
                 return false;
 
             case ATTACK:
-                if (args.length == 1){
-                    System.out.println("Usage: attack with [weapon name].");
-                    return false;
-                }else if(args.length == 2){
-                    if (args[1].compareTo("with") == 0) {
-                        System.out.println("Please specify a weapon to attack with!");
-                    }else{
-                        System.out.println("Usage: attack with [weapon name].");
-                    }
-                    return false;
-                }else if(args.length > 3){
-                    System.out.println("Too many arguments!");
-                    return false;
-                }
-                attackWith(args[2]);
-                return false;
+                return attack(args);
 
             case HELP:
                 help();
@@ -102,12 +80,33 @@ public final class ZorkHandler {
         }
     }
 
-    private void drop(String item){
-        System.out.println("in drop: " + item);
+    private void drop(String[] args){
+        if (args.length == 1){
+            System.out.println("Please specify an item to drop!");
+            return;
+        }else if(args.length > 2){
+            System.out.println("Too many arguments!");
+            return;
+        }
+        traverser.drop(args[1].toLowerCase());
     }
 
-    private void attackWith(String weapon){
-        System.out.println("in attack: "+ weapon);
+    private boolean attack(String[] args){
+        if (args.length == 1){
+            System.out.println("Usage: attack with [weapon name].");
+            return false;
+        }else if(args.length == 2){
+            if (args[1].compareTo("with") == 0) {
+                System.out.println("Please specify a weapon to attack with!");
+            }else{
+                System.out.println("Usage: attack with [weapon name].");
+            }
+            return false;
+        }else if(args.length > 3){
+            System.out.println("Too many arguments!");
+            return false;
+        }
+        return traverser.attackWith(args[2].toLowerCase());
     }
 
     private void help(){
@@ -119,7 +118,7 @@ public final class ZorkHandler {
     }
 
     private void quit(){
-        // todo: save state maybe?
+        // todo: save state maybe? possibly? perhaps? if likely? ideally?
     }
 
     private static final ZorkHandler ZORK_COMMAND_HANDLER = new ZorkHandler();

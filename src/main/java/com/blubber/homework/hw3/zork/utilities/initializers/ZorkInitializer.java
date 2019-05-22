@@ -82,7 +82,7 @@ public final class ZorkInitializer {
         return new LevelBuilder().setRooms(new HashSet<Room>(){{
             add(startRoom); add(r1); add(r2); add(r3);
             add(r4); add(r5); add(r6); add(r7); add(r8);
-        }}).setStartRoom(startRoom).setTotalMonsters(6).initLevel().getLevel();
+        }}).setName("Level 1").setStartRoom(startRoom).setTotalMonsters(6).initLevel().getLevel();
     }
 
     private Room createWeaponLootRoom(Weapons weaponInfo){

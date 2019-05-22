@@ -20,9 +20,9 @@ public class Player extends Entity{
         setHealth(100.0);
     }
 
-    public void attack(){
-
-    }
+//    public void attack(){
+//
+//    }
 
 //    public Set<Consumable> getConsumables() { return consumables; }
     public Set<Weapon> getWeapons() { return weapons; }

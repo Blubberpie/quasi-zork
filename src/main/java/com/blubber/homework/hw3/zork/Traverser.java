@@ -12,8 +12,12 @@ import com.blubber.homework.hw3.zork.utilities.enums.Direction;
 import com.blubber.homework.hw3.zork.utilities.initializers.ZorkInitializer;
 
 import java.util.Map;
+import java.util.Random;
 
 public final class Traverser {
+
+    private double TRAVERSAL_HEAL_VALUE = 30.0;
+    private Random rand = new Random();
 
     private Level currentLevel;
     private Room currentRoom;
@@ -30,6 +34,11 @@ public final class Traverser {
         Map<Direction, Room> connectedRooms = currentRoom.getConnectedRooms();
         if (connectedRooms.containsKey(direction)) {
             Room nxt = connectedRooms.get(direction);
+            // Heal the player upon entering a new room
+            if (!nxt.isVisited()) {
+                player.incrementHealth(TRAVERSAL_HEAL_VALUE);
+                System.out.println("You healed by " + TRAVERSAL_HEAL_VALUE + " HP!!");
+            }
             currentRoom.setInactive();
             currentRoom = nxt;
             currentRoom.setActive();
@@ -40,6 +49,10 @@ public final class Traverser {
         }
     }
 
+    /**
+     * Picks up a weapon from the room and puts it in the player's
+     * inventory.
+     */
     public void take(){
         if (LootRoom.class.isAssignableFrom(currentRoom.getClass())){
             Item roomItem = ((LootRoom) currentRoom).pickUpItem();
@@ -52,6 +65,100 @@ public final class Traverser {
         }else{
             System.out.println("You cannot take anything from a battle room!");
         }
+    }
+
+    public void drop(String weaponToDrop){
+        for (Weapon weapon: player.getWeapons()){
+            if (weapon.getName().compareTo(weaponToDrop) == 0){
+                player.removeWeapon(weapon);
+                System.out.println("You dropped the " + weaponToDrop + "!");
+                return;
+            }
+        }
+        System.out.println("You don't have that weapon! " +
+                "\nPlease check that you spelled it correctly.");
+    }
+
+    public boolean attackWith(String weaponToAttackWith){
+        if(BattleRoom.class.isAssignableFrom(currentRoom.getClass())){
+            if (((BattleRoom) currentRoom).isDefeated()){
+                System.out.println("Leave its corpse alone, you sick monster!");
+                return false;
+            }else{
+                Mob mob = ((BattleRoom) currentRoom).getMob();
+                boolean foundWeapon = false;
+                double totalDamage = player.getDamage();
+                for (Weapon weapon : player.getWeapons()) {
+                    if (weapon.getName().compareTo(weaponToAttackWith) == 0) {
+                        totalDamage += weapon.getDamage();
+                        foundWeapon = true;
+                    }
+                }
+                if (!foundWeapon) System.out.println(weaponToAttackWith + " is not in your inventory!\n" +
+                        "Attacking with fist instead.");
+                mob.decrementHealth(totalDamage);
+                System.out.println("You inflicted "
+                        + totalDamage
+                        + " damage!");
+                if (!mob.isAlive()) {
+                    System.out.println("You've defeated " + mob.getName() + "!");
+                    ((BattleRoom) currentRoom).setDefeated();
+                    currentLevel.incrementMonstersDefeated();
+                    // re-instantiation code todo: move?
+//                    if (currentLevel.setLevelStatus()){
+//                        System.out.println("Congratulations! You beat " + currentLevel.getName() + "!");
+//                        System.out.println("Warping to next level...");
+//                        if (currentLevel.getNextLevel() != null) {
+//                            currentLevel = currentLevel.getNextLevel();
+//                            currentRoom = currentLevel.getStartRoom();
+//                            currentRoom.setVisited();
+//                        }else{
+//                            System.out.println("You've completed the game!");
+//                            printYay();
+//                        }
+//                    }
+                    return false;
+                }else{
+                    if (rand.nextDouble() <= mob.getHitProbability()){
+                        player.decrementHealth(mob.getDamage());
+                        System.out.println("You took " + mob.getDamage() + " damage!");
+                        if (!player.isAlive()){
+                            System.out.println(mob.getName() + " has killed you!");
+                            printGameOver();
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+                return false;
+            }
+        }
+        else {
+            System.out.println("You cannot attack in a loot room!");
+            return false;
+        }
+    }
+
+    private void printYay(){
+        System.out.println(" __     __         _ \n" +
+                " \\ \\   / /        | |\n" +
+                "  \\ \\_/ /_ _ _   _| |\n" +
+                "   \\   / _` | | | | |\n" +
+                "    | | (_| | |_| |_|\n" +
+                "    |_|\\__,_|\\__, (_)\n" +
+                "              __/ |  \n" +
+                "             |___/   ");
+        System.out.println();
+    }
+
+    private void printGameOver(){
+        System.out.println(" _____                        _____                _\n" +
+                "|  __ \\                      |  _  |              | |\n" +
+                "| |  \\/ __ _ _ __ ___   ___  | | | |_   _____ _ __| |\n" +
+                "| | __ / _` | '_ ` _ \\ / _ \\ | | | \\ \\ / / _ \\ '__| |\n" +
+                "| |_\\ \\ (_| | | | | | |  __/ \\ \\_/ /\\ V /  __/ |  |_|\n" +
+                " \\____/\\__,_|_| |_| |_|\\___|  \\___/  \\_/ \\___|_|  (_)");
+        System.out.println();
     }
 
     /**
