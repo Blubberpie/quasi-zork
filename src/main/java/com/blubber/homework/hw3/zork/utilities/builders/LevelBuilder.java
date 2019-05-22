@@ -29,5 +29,10 @@ public class LevelBuilder{
         return this;
     }
 
+    public LevelBuilder setTotalMonsters(int totalMonsters){
+        level.setTotalMonsters(totalMonsters);
+        return this;
+    }
+
     public Level getLevel(){ return level; }
 }

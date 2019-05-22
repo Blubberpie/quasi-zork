@@ -7,8 +7,10 @@ public class Level {
     private Room startRoom;
     private boolean levelCleared;
 
+    private Level nextLevel;
+
     private int totalMonsters;
-    private int monstersDefeated;
+    private int monstersDefeated = 0;
 
     public void setLevelStatus() {
         if(getTotalMonsters() == getMonstersDefeated()){
@@ -24,7 +26,8 @@ public class Level {
 
     public void setRooms(Set<Room> rooms){ this.rooms = rooms; }
     public void setStartRoom(Room startRoom){ this.startRoom = startRoom; }
-    public void clearLevel(){ this.levelCleared = true; }
-    public void initLevel(){ this.levelCleared = false; }
-
+    public void clearLevel(){ levelCleared = true; }
+    public void initLevel(){ levelCleared = false; }
+    public void setNextLevel(Level nextLevel) { this.nextLevel = nextLevel;}
+    public void setTotalMonsters(int totalMonsters) { this.totalMonsters = totalMonsters; }
 }

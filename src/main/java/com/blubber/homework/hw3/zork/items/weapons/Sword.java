@@ -1,4 +1,12 @@
 package com.blubber.homework.hw3.zork.items.weapons;
 
-public class Sword {
+import com.blubber.homework.hw3.zork.items.Weapon;
+
+public class Sword extends Weapon {
+
+    public Sword(){}
+
+    public Sword(String name){
+        super(name);
+    }
 }

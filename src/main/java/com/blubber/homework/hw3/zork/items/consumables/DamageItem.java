@@ -1,4 +1,8 @@
 package com.blubber.homework.hw3.zork.items.consumables;
 
-public abstract class DamageItem {
+import com.blubber.homework.hw3.zork.items.Consumable;
+
+public class DamageItem extends Consumable {
+
+    private double damage;
 }

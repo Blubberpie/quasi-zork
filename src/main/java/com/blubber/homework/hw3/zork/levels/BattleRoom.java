@@ -11,4 +11,5 @@ public class BattleRoom extends Room {
     public void setDefeatStatus(){
     }
 
+    public Mob getMob() { return mob; }
 }
