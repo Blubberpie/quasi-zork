@@ -93,8 +93,7 @@ public final class ZorkHandler {
 
     private boolean attack(String[] args){
         if (args.length == 1){
-            System.out.println("Usage: attack with [weapon name].");
-            return false;
+            return traverser.attackWeaponless();
         }else if(args.length == 2){
             if (args[1].compareTo("with") == 0) {
                 System.out.println("Please specify a weapon to attack with!");

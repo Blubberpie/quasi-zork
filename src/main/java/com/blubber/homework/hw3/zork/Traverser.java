@@ -79,32 +79,55 @@ public final class Traverser {
                 "\nPlease check that you spelled it correctly.");
     }
 
-    public boolean attackWith(String weaponToAttackWith){
+    public boolean roomIsAttackable(){
         if(BattleRoom.class.isAssignableFrom(currentRoom.getClass())){
             if (((BattleRoom) currentRoom).isDefeated()){
                 System.out.println("Leave its corpse alone, you sick monster!");
                 return false;
             }else{
-                Mob mob = ((BattleRoom) currentRoom).getMob();
-                boolean foundWeapon = false;
-                double totalDamage = player.getDamage();
-                for (Weapon weapon : player.getWeapons()) {
-                    if (weapon.getName().compareTo(weaponToAttackWith) == 0) {
-                        totalDamage += weapon.getDamage();
-                        foundWeapon = true;
-                    }
+                return true;
+            }
+        } else {
+            System.out.println("You cannot attack in a loot room!");
+            return false;
+        }
+    }
+
+    public boolean attackWeaponless(){
+        if (roomIsAttackable()){
+            return commenceOneBattleTurn(player.getDamage());
+        }
+        return false;
+    }
+
+    public boolean attackWith(String weaponToAttackWith){
+        if (roomIsAttackable()){
+            boolean playerHasWeapon = false;
+            double totalDamage = player.getDamage();
+            for (Weapon weapon : player.getWeapons()) {
+                if (weapon.getName().compareTo(weaponToAttackWith) == 0) {
+                    totalDamage += weapon.getDamage();
+                    playerHasWeapon = true;
                 }
-                if (!foundWeapon) System.out.println(weaponToAttackWith + " is not in your inventory!\n" +
-                        "Attacking with fist instead.");
-                mob.decrementHealth(totalDamage);
-                System.out.println("You inflicted "
-                        + totalDamage
-                        + " damage!");
-                if (!mob.isAlive()) {
-                    System.out.println("You've defeated " + mob.getName() + "!");
-                    ((BattleRoom) currentRoom).setDefeated();
-                    currentLevel.incrementMonstersDefeated();
-                    // re-instantiation code todo: move?
+            }
+            if (!playerHasWeapon) System.out.println(weaponToAttackWith + " is not in your inventory!\n" +
+                    "Attacking with fist instead.");
+            return commenceOneBattleTurn(totalDamage);
+        }
+        return false;
+    }
+
+    private boolean commenceOneBattleTurn(double totalDamage){
+        Mob mob = ((BattleRoom) currentRoom).getMob();
+        mob.decrementHealth(totalDamage);
+        System.out.println("You inflicted "
+                + totalDamage
+                + " damage!");
+        if (!mob.isAlive()) {
+            System.out.println("You've defeated " + mob.getName() + "!");
+            ((BattleRoom) currentRoom).setDefeated();
+            currentLevel.incrementMonstersDefeated();
+            // re-instantiation code todo: move?
 //                    if (currentLevel.setLevelStatus()){
 //                        System.out.println("Congratulations! You beat " + currentLevel.getName() + "!");
 //                        System.out.println("Warping to next level...");
@@ -117,26 +140,20 @@ public final class Traverser {
 //                            printYay();
 //                        }
 //                    }
-                    return false;
-                }else{
-                    if (rand.nextDouble() <= mob.getHitProbability()){
-                        player.decrementHealth(mob.getDamage());
-                        System.out.println("You took " + mob.getDamage() + " damage!");
-                        if (!player.isAlive()){
-                            System.out.println(mob.getName() + " has killed you!");
-                            printGameOver();
-                            return true;
-                        }
-                        return false;
-                    }
+            return false;
+        }else{
+            if (rand.nextDouble() <= mob.getHitProbability()){
+                player.decrementHealth(mob.getDamage());
+                System.out.println("You took " + mob.getDamage() + " damage!");
+                if (!player.isAlive()){
+                    System.out.println(mob.getName() + " has killed you!");
+                    printGameOver();
+                    return true;
                 }
                 return false;
             }
         }
-        else {
-            System.out.println("You cannot attack in a loot room!");
-            return false;
-        }
+        return false;
     }
 
     private void printYay(){
@@ -209,6 +226,10 @@ public final class Traverser {
                     );
         }
         System.out.println();
+    }
+
+    public boolean playerIsWeaponless(){
+        return player.getWeapons().isEmpty();
     }
 
     private static final Traverser TRAVERSER = new Traverser();
