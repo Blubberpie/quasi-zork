@@ -1,6 +1,5 @@
 package com.blubber.homework.hw3.zork.entities;
 
-import com.blubber.homework.hw3.zork.items.Consumable;
 import com.blubber.homework.hw3.zork.items.Weapon;
 
 import java.util.HashSet;
@@ -15,14 +14,17 @@ public class Player extends Entity{
         super();
 //        consumables = new HashSet<>();
         weapons = new HashSet<>();
-        setDamage(10.0);
+        setBaseDamage(10.0);
+        setBuffedDamage(this.getBaseDamage());
         setMaximumHealth(100.0);
-        setHealth(100.0);
+        setHealth(this.getMaximumHealth());
+        this.setName("Player"); // Since this game is single-player only, we're safe
     }
 
-//    public void attack(){
-//
-//    }
+    public boolean attack(Entity victim){
+        attackDefault(victim);
+        return (!victim.isAlive()); // Return true if dead
+    }
 
 //    public Set<Consumable> getConsumables() { return consumables; }
     public Set<Weapon> getWeapons() { return weapons; }

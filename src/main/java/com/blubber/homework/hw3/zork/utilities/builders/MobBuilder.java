@@ -10,7 +10,8 @@ public class MobBuilder {
     public MobBuilder setMob(Mobs mobInfo){
         this.mob.setName(mobInfo.toString());
         this.mob.setHitProbability(mobInfo.getHitProbability());
-        this.mob.setDamage(mobInfo.getDamage());
+        this.mob.setBaseDamage(mobInfo.getDamage());
+        this.mob.setBuffedDamage(mobInfo.getDamage());
         this.mob.setMaximumHealth(mobInfo.getMaxHealth());
         this.mob.setHealth(mobInfo.getMaxHealth());
         return this;

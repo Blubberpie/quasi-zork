@@ -26,7 +26,7 @@ public class MessagePrinter {
     }
 
     public static void mpAttackUsage(){
-        System.out.println("Usage: attack with [weapon name].");
+        System.out.println(Command.ATTACK.getDescription());
     }
 
     public static void mpInvalidCommand(){
@@ -58,11 +58,6 @@ public class MessagePrinter {
                 "\nPlease check that you spelled it correctly.");
     }
 
-    public static void mpAttackWithFistInstead(String weaponToAttackWith){
-        System.out.println(weaponToAttackWith + " is not in your inventory!\n" +
-                "Attacking with fist instead.");
-    }
-
     public static void mpCannotAttackCorpse(){
         System.out.println("Leave its corpse alone, you sick monster!");
     }
@@ -79,22 +74,21 @@ public class MessagePrinter {
         System.out.println("You dropped the " + objectToDrop + "!");
     }
 
-    public static void mpPlayerInflictsDamage(double totalDamage){
-        System.out.println("You inflicted "
+    public static void mpEntityInflictsDamage(String attacker, String victim, double totalDamage){
+        System.out.println(attacker + " inflicted "
                 + totalDamage
-                + " damage!");
+                + " damage to " +
+                victim + "!");
     }
 
-    public static void mpMobDefeated(String mobName){
-        System.out.println("You've defeated " + mobName + "!");
+    public static void mpAttackMissed(String attacker){
+        System.out.println(attacker + " missed an attack!");
     }
 
-    public static void mpDamageTaken(double damage){
-        System.out.println("You took " + damage + " damage!");
-    }
-
-    public static void mpPlayerKilledBy(String mobName){
-        System.out.println(mobName + " has killed you!");
+    public static void mpEntityKilledBy(String victim, String killer){
+        System.out.println(victim +
+                " was killed by " +
+                killer + "!");
     }
 
     public static void mpPlayerHealedBy(double healValue){
@@ -147,7 +141,7 @@ public class MessagePrinter {
                 player.getHealth() + "/" +
                 player.getMaximumHealth() + "\n" +
                 "Damage: " +
-                player.getDamage() + "\n");
+                player.getBaseDamage() + "\n");
     }
 
     public static void mpPlayerInventory(Player player){
@@ -155,7 +149,11 @@ public class MessagePrinter {
         if (player.getWeapons().size() == 0) System.out.println("(empty)");
         else{
             for (Weapon weapon: player.getWeapons()){
-                System.out.println("Weapon: " + weapon.getName());
+                System.out.println("Weapon: " +
+                        weapon.getName() +
+                        " | Damage: " +
+                        weapon.getDamage()
+                        );
             }
         }
         System.out.println();
@@ -173,7 +171,7 @@ public class MessagePrinter {
                             mob.getHealth() + "/" +
                             mob.getMaximumHealth() + "\n" +
                     "Current enemy's damage: " +
-                            mob.getDamage());
+                            mob.getBaseDamage());
         }else if(LootRoom.class.isAssignableFrom(currentRoom.getClass())){
             System.out.print("Weapon: ");
             if (((LootRoom) currentRoom).getItem() == null){

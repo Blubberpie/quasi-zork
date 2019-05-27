@@ -78,9 +78,7 @@ public final class Traverser {
             if (currentRoom.isClear()){
                 MessagePrinter.mpCannotAttackCorpse();
                 return false;
-            }else{
-                return true;
-            }
+            }else return true;
         } else {
             MessagePrinter.mpCannotAttackLootRoom();
             return false;
@@ -88,37 +86,52 @@ public final class Traverser {
     }
 
     public boolean attackWeaponless(){
-        if (roomIsAttackable()){
-            return commenceOneBattleTurn(player.getDamage());
-        }
+        if (roomIsAttackable()) return commenceOneBattleTurn();
         return false;
     }
 
     public boolean attackWith(String weaponToAttackWith){
         if (roomIsAttackable()){
             boolean playerHasWeapon = false;
-            double totalDamage = player.getDamage();
+            double weaponDamage = 0.0;
             for (Weapon weapon : player.getWeapons()) {
                 if (weapon.getName().compareTo(weaponToAttackWith) == 0) {
-                    totalDamage += weapon.getDamage();
+                    weaponDamage = weapon.getDamage();
+                    player.incrementBuffedDamage(weaponDamage);
                     playerHasWeapon = true;
                 }
             }
-            if (!playerHasWeapon) MessagePrinter.mpAttackWithFistInstead(weaponToAttackWith);
-            return commenceOneBattleTurn(totalDamage);
+            if (!playerHasWeapon) {
+                MessagePrinter.mpWeaponAbsent();
+                return false;
+            }
+            boolean playerIsDead = commenceOneBattleTurn();
+            // Player damage returns to last known value after attacking
+            player.decrementBuffedDamage(weaponDamage);
+            return playerIsDead;
         }
         return false;
     }
 
-    private boolean commenceOneBattleTurn(double totalDamage){
+    private boolean commenceOneBattleTurn(){
         Mob mob = ((BattleRoom) currentRoom).getMob();
-        mob.decrementHealth(totalDamage);
-        MessagePrinter.mpPlayerInflictsDamage(totalDamage);
-        if (!mob.isAlive()) {
-            MessagePrinter.mpMobDefeated(mob.getName());
+        if (player.attack(mob)){
             ((BattleRoom) currentRoom).setDefeated();
             currentLevel.incrementMonstersDefeated();
-            // re-instantiation code todo: move?
+            MessagePrinter.mpEntityKilledBy(mob.getName(), player.getName());
+            // re-instantiation code here
+            return false;
+        }else{
+            if (mob.attack(player)){
+                MessagePrinter.mpEntityKilledBy(player.getName(), mob.getName());
+                MessagePrinter.mpGameOver();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // re-instantiation code todo: uncomment and paste into commenceOneBattleTurn
 //                    if (currentLevel.setLevelStatus()){
 //                        System.out.println("Congratulations! You beat " + currentLevel.getName() + "!");
 //                        System.out.println("Warping to next level...");
@@ -131,21 +144,6 @@ public final class Traverser {
 //                            printYay();
 //                        }
 //                    }
-            return false;
-        }else{
-            if (rand.nextDouble() <= mob.getHitProbability()){
-                player.decrementHealth(mob.getDamage());
-                MessagePrinter.mpDamageTaken(mob.getDamage());
-                if (!player.isAlive()){
-                    MessagePrinter.mpPlayerKilledBy(mob.getName());
-                    MessagePrinter.mpGameOver();
-                    return true;
-                }
-                return false;
-            }
-        }
-        return false;
-    }
 
     /**
      * Prints out:

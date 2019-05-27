@@ -4,7 +4,8 @@ public enum Command {
     INFO("info", "Display information about player and current room."),
     TAKE("take", "Pick up the item in the current room."),
     DROP("drop", "(Usage: drop [item name]) Drop a specified item."),
-    ATTACK("attack", "(Usage: attack with [weapon name]) Attack a mob with a specified weapon."),
+    ATTACK("attack", "(Usage: attack with [weapon name]) Attack a mob with a specified weapon.\n" +
+                                            "\t\tSimply typing \'attack\' will inflict your player's base damage on the enemy."),
 //    USE("use", "(Usage: use [item name]) Use an item."),
     HELP("help", "Display this message."),
     QUIT("quit", "Quit the game."),

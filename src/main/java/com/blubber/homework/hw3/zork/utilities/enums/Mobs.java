@@ -5,7 +5,7 @@ public enum Mobs {
     LIZALFOS("Lizalfos", 50.0, 11.0, 0.43),
     REDEAD("Redead", 100.0, 20.0, 0.3),
     LIKE_LIKE("Like-Like", 100.0, 23.0, 0.3),
-    STALLORD("Stallord", 150.0, 30.0, 0.24),
+    STALLORD("Stallord", 150.0, 40.0, 0.24),
     ARMOS("Armos", 50.0, 10.0, 0.4),
     BEAMOS("Beamos", 50.0, 11.0, 0.43),
     SHADOW_BEAST("Shadow Beast", 50.0, 20.0, 0.3),
