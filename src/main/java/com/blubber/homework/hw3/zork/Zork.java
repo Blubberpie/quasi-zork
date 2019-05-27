@@ -1,5 +1,6 @@
 package com.blubber.homework.hw3.zork;
 
+import com.blubber.homework.hw3.zork.utilities.MessagePrinter;
 import com.blubber.homework.hw3.zork.utilities.enums.Command;
 
 import java.util.Scanner;
@@ -18,7 +19,7 @@ public class Zork {
     }
 
     public void run(){
-        displayWelcomeMessage();
+        MessagePrinter.mpWelcomeMessage();
         zorkHandler.handleCommand(Command.HELP, null);
         while(isRunning()){
             if (quit) { break; }
@@ -28,17 +29,6 @@ public class Zork {
             Command inputCommand = zorkHandler.getCommand(userArgs[0]);
             quit = zorkHandler.handleCommand(inputCommand, userArgs);
         }
-    }
-
-    private void displayWelcomeMessage(){
-        System.out.println("Welcome to Quasi-Zork!");
-        System.out.println("In this totally-not-ripped-off version of Zork,\nyour goal is to escape the dungeon by traversing through 3 levels.");
-        System.out.println("Defeat all enemies to clear a level and move on to the next.");
-        System.out.println("Entering an unvisited room will boost your HP.");
-        System.out.println("Good luck!\n");
-        System.out.println("=====================");
-        System.out.println("Developed by Zwel Pai");
-        System.out.println("=====================\n\n");
     }
 
     public boolean isRunning(){ return !quit; }

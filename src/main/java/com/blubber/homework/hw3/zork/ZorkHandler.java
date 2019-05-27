@@ -1,5 +1,6 @@
 package com.blubber.homework.hw3.zork;
 
+import com.blubber.homework.hw3.zork.utilities.MessagePrinter;
 import com.blubber.homework.hw3.zork.utilities.enums.Command;
 import com.blubber.homework.hw3.zork.utilities.enums.Direction;
 
@@ -20,7 +21,7 @@ public final class ZorkHandler {
 
     public boolean handleCommand(Command command, String[] args){
         if (command == null){
-            System.out.println("Invalid command! Type \'help\' to see the list of valid commands.");
+            MessagePrinter.mpInvalidCommand();
             return false;
         }
         switch(command){
@@ -40,7 +41,7 @@ public final class ZorkHandler {
                 return attack(args);
 
             case HELP:
-                help();
+                MessagePrinter.mpHelp();
                 return false;
 
             case QUIT:
@@ -82,38 +83,28 @@ public final class ZorkHandler {
 
     private void drop(String[] args){
         if (args.length == 1){
-            System.out.println("Please specify an item to drop!");
+            MessagePrinter.mpSpecifyItem();
             return;
         }else if(args.length > 2){
-            System.out.println("Too many arguments!");
+            MessagePrinter.mpArgumentExcess();
             return;
         }
         traverser.drop(args[1].toLowerCase());
     }
 
     private boolean attack(String[] args){
-        if (args.length == 1){
-            return traverser.attackWeaponless();
-        }else if(args.length == 2){
-            if (args[1].compareTo("with") == 0) {
-                System.out.println("Please specify a weapon to attack with!");
-            }else{
-                System.out.println("Usage: attack with [weapon name].");
-            }
+        if (args.length == 1) return traverser.attackWeaponless();
+        else if(args.length == 2){
+
+            if (args[1].compareTo("with") == 0) MessagePrinter.mpSpecifyWeapon();
+            else                                MessagePrinter.mpAttackUsage();
+
             return false;
         }else if(args.length > 3){
-            System.out.println("Too many arguments!");
+            MessagePrinter.mpArgumentExcess();
             return false;
         }
         return traverser.attackWith(args[2].toLowerCase());
-    }
-
-    private void help(){
-        System.out.println("========= LIST OF COMMANDS =========");
-        for (Command cmd: Command.values()){
-            System.out.println(cmd.toString() + ": " + cmd.getDescription());
-        }
-        System.out.println("====================================");
     }
 
     private void quit(){
