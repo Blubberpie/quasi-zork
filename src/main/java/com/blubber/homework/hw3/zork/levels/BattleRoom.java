@@ -12,5 +12,7 @@ public class BattleRoom extends Room {
 
     public Mob getMob() { return mob; }
 
-    public boolean isDefeated() { return defeated; }
+    public boolean isClear() {
+        return defeated;
+    }
 }

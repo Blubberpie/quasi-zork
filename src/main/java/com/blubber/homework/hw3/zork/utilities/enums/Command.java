@@ -1,7 +1,5 @@
 package com.blubber.homework.hw3.zork.utilities.enums;
 
-import java.net.NoRouteToHostException;
-
 public enum Command {
     INFO("info", "Display information about player and current room."),
     TAKE("take", "Pick up the item in the current room."),

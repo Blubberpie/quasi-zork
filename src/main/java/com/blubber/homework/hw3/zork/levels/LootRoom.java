@@ -17,4 +17,7 @@ public class LootRoom extends Room{
         removeItem();
         return got;
     }
+
+    public boolean isClear() {
+        return item == null;}
 }

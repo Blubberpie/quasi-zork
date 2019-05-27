@@ -58,12 +58,8 @@ public final class Traverser {
             if (!(roomItem == null)){
                 player.addWeapon((Weapon) roomItem);
                 MessagePrinter.mpPickedUp(roomItem.getName());
-            }else{
-                MessagePrinter.mpEmptyItemRoom();
-            }
-        }else{
-            MessagePrinter.mpCannotTakeBattleRoom();
-        }
+            }else MessagePrinter.mpEmptyItemRoom();
+        }else MessagePrinter.mpCannotTakeBattleRoom();
     }
 
     public void drop(String weaponToDrop){
@@ -79,7 +75,7 @@ public final class Traverser {
 
     public boolean roomIsAttackable(){
         if(BattleRoom.class.isAssignableFrom(currentRoom.getClass())){
-            if (((BattleRoom) currentRoom).isDefeated()){
+            if (currentRoom.isClear()){
                 MessagePrinter.mpCannotAttackCorpse();
                 return false;
             }else{
