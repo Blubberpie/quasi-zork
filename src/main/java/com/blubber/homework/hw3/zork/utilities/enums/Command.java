@@ -7,6 +7,8 @@ public enum Command {
     ATTACK("attack", "(Usage: attack with [weapon name]) Attack a mob with a specified weapon.\n" +
                                             "\t\tSimply typing \'attack\' will inflict your player's base damage on the enemy."),
 //    USE("use", "(Usage: use [item name]) Use an item."),
+//    RULES("rules", "Get a detailed description of how the entire game works."),
+//    CHEAT("cheat", "yes"),
     HELP("help", "Display this message."),
     QUIT("quit", "Quit the game."),
     NORTH("north", "Enter the room to the north."),

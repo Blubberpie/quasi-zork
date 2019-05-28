@@ -8,7 +8,7 @@ public class BattleRoom extends Room {
     private boolean defeated = false;
 
     public void setMob(Mob mob){ this.mob = mob; }
-    public void setDefeated(){ defeated = true; }
+    public void clearRoom(){ defeated = true; }
 
     public Mob getMob() { return mob; }
 

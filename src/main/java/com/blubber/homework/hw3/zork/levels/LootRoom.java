@@ -6,7 +6,7 @@ public class LootRoom extends Room{
 
     private Item item;
 
-    private void removeItem(){ item = null; }
+    public void clearRoom(){ item = null; }
 
     public Item getItem() { return item; }
     public void setItem(Item item){ this.item = item; }
@@ -14,7 +14,7 @@ public class LootRoom extends Room{
     // todo: implement null checker in usage
     public Item pickUpItem() {
         Item got = item;
-        removeItem();
+        clearRoom();
         return got;
     }
 

@@ -76,6 +76,10 @@ public final class ZorkHandler {
                 traverser.traverseRoom(Direction.WEST);
                 return false;
 
+//            case CHEAT:
+//                traverser.cheat();
+//                return false;
+
             default:
                 return false;
         }
@@ -97,7 +101,7 @@ public final class ZorkHandler {
         else if(args.length == 2){
 
             if (args[1].compareTo("with") == 0) MessagePrinter.mpSpecifyWeapon();
-            else                                MessagePrinter.mpAttackUsage();
+            else MessagePrinter.mpAttackUsage();
 
             return false;
         }else if(args.length > 3){

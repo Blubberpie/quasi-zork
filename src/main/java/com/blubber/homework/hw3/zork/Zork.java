@@ -22,7 +22,6 @@ public class Zork {
         MessagePrinter.mpWelcomeMessage();
         zorkHandler.handleCommand(Command.HELP, null);
         while(isRunning()){
-            if (quit) { break; }
             System.out.print("Player action> ");
             userInput = scanner.nextLine();
             String[] userArgs = userInput.split(" ");

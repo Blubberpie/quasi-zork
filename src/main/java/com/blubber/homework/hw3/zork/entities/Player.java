@@ -10,15 +10,15 @@ public class Player extends Entity{
 //    private Set<Consumable> consumables;
     private Set<Weapon> weapons;
 
-    public Player(){
+    public Player(String name){
         super();
 //        consumables = new HashSet<>();
         weapons = new HashSet<>();
-        setBaseDamage(10.0);
+        setBaseDamage(20.0);
         setBuffedDamage(this.getBaseDamage());
         setMaximumHealth(100.0);
         setHealth(this.getMaximumHealth());
-        this.setName("Player"); // Since this game is single-player only, we're safe
+        this.setName(name); // Since this game is single-player only, we're safe
     }
 
     public boolean attack(Entity victim){

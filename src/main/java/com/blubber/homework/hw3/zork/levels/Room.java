@@ -20,6 +20,7 @@ public abstract class Room {
     }
 
     public abstract boolean isClear();
+    public abstract void clearRoom();
 
     public void setActive() { active = true; }
     public void setInactive() { active = false; }

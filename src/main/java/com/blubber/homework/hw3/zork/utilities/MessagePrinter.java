@@ -11,6 +11,10 @@ import com.blubber.homework.hw3.zork.utilities.enums.Direction;
 
 import java.util.Map;
 
+/**
+ * Handles all *reusable* messages displayed to the player.
+ * Makes for organized code.
+ */
 public class MessagePrinter {
 
     public static void mpSpecifyItem(){
@@ -103,8 +107,24 @@ public class MessagePrinter {
         System.out.println("There is no door to the " + direction + ".");
     }
 
+    public static void mpLevelBeat(String oldLevel){
+        System.out.println("\n" +
+                " _                    _   _____ _                 _ \n" +
+                "| |                  | | /  __ \\ |               | |\n" +
+                "| |     _____   _____| | | /  \\/ | ___  __ _ _ __| |\n" +
+                "| |    / _ \\ \\ / / _ \\ | | |   | |/ _ \\/ _` | '__| |\n" +
+                "| |___|  __/\\ V /  __/ | | \\__/\\ |  __/ (_| | |  |_|\n" +
+                "\\_____/\\___| \\_/ \\___|_|  \\____/_|\\___|\\__,_|_|  (_)\n" +
+                "                                                    \n" +
+                "                                                    ");
+        System.out.println("Congratulations! You beat " +
+                oldLevel + "!\n" +
+                "Warping to next level...\n");
+    }
+
     public static void mpYay(){
-        System.out.println(" __     __         _ \n" +
+        System.out.println("\nYou've completed the game!\n" +
+                " __     __         _ \n" +
                 " \\ \\   / /        | |\n" +
                 "  \\ \\_/ /_ _ _   _| |\n" +
                 "   \\   / _` | | | | |\n" +

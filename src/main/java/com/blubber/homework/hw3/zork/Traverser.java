@@ -10,26 +10,36 @@ import com.blubber.homework.hw3.zork.levels.LootRoom;
 import com.blubber.homework.hw3.zork.levels.Room;
 import com.blubber.homework.hw3.zork.utilities.MessagePrinter;
 import com.blubber.homework.hw3.zork.utilities.enums.Direction;
-import com.blubber.homework.hw3.zork.utilities.initializers.ZorkInitializer;
+import com.blubber.homework.hw3.zork.utilities.packs.ZorkLevelSetup;
 
 import java.util.Map;
-import java.util.Random;
 
 public final class Traverser {
 
+    private final int TOTAL_LEVELS = 3;
+    private int LEVEL_NUM = 1;
     private double TRAVERSAL_HEAL_VALUE = 30.0;
-    private Random rand = new Random();
 
     private Level currentLevel;
     private Room currentRoom;
     private Player player;
 
     private Traverser(){
-        currentLevel = ZorkInitializer.getInstance().initialize();
-        currentRoom = currentLevel.getStartRoom();
-        currentRoom.setVisited();
-        player = new Player();
+        currentLevel = ZorkLevelSetup.getInstance().initialize(LEVEL_NUM);
+        if (currentLevel != null) {
+            currentRoom = currentLevel.getStartRoom();
+            currentRoom.setVisited();
+            player = new Player("Player");
+        }
     }
+
+//    public void cheat(){
+//        for (int i=0; i < currentLevel.getTotalMonsters() - currentLevel.getMonstersDefeated(); i++){
+//            currentLevel.incrementMonstersDefeated();
+//        }
+//
+//        checkAndProgressLevel();
+//    }
 
     public void traverseRoom(Direction direction){
         Map<Direction, Room> connectedRooms = currentRoom.getConnectedRooms();
@@ -40,6 +50,9 @@ public final class Traverser {
                 player.incrementHealth(TRAVERSAL_HEAL_VALUE);
                 MessagePrinter.mpPlayerHealedBy(TRAVERSAL_HEAL_VALUE);
             }
+            // Perhaps this might be useful in controlling events
+            // e.g. a monster in a non-active room may not be damaged,
+            // or an item in a non-active room may not be collected
             currentRoom.setInactive();
             currentRoom = nxt;
             currentRoom.setActive();
@@ -116,11 +129,10 @@ public final class Traverser {
     private boolean commenceOneBattleTurn(){
         Mob mob = ((BattleRoom) currentRoom).getMob();
         if (player.attack(mob)){
-            ((BattleRoom) currentRoom).setDefeated();
+            currentRoom.clearRoom();
             currentLevel.incrementMonstersDefeated();
             MessagePrinter.mpEntityKilledBy(mob.getName(), player.getName());
-            // re-instantiation code here
-            return false;
+            return checkAndProgressLevel();
         }else{
             if (mob.attack(player)){
                 MessagePrinter.mpEntityKilledBy(player.getName(), mob.getName());
@@ -131,19 +143,23 @@ public final class Traverser {
         return false;
     }
 
-    // re-instantiation code todo: uncomment and paste into commenceOneBattleTurn
-//                    if (currentLevel.setLevelStatus()){
-//                        System.out.println("Congratulations! You beat " + currentLevel.getName() + "!");
-//                        System.out.println("Warping to next level...");
-//                        if (currentLevel.getNextLevel() != null) {
-//                            currentLevel = currentLevel.getNextLevel();
-//                            currentRoom = currentLevel.getStartRoom();
-//                            currentRoom.setVisited();
-//                        }else{
-//                            System.out.println("You've completed the game!");
-//                            printYay();
-//                        }
-//                    }
+    private boolean checkAndProgressLevel(){
+        String currentLevelName = currentLevel.getName();
+        if (currentLevel.setLevelStatus()){
+            if (LEVEL_NUM == TOTAL_LEVELS){
+                MessagePrinter.mpYay();
+                return true;
+            }else {
+                LEVEL_NUM++;
+                currentLevel = ZorkLevelSetup.getInstance().initialize(LEVEL_NUM);
+                if (currentLevel != null) {
+                    MessagePrinter.mpLevelBeat(currentLevelName);
+                    currentRoom = currentLevel.getStartRoom();
+                    currentRoom.setVisited();
+                }
+            }return false;
+        }return false;
+    }
 
     /**
      * Prints out:
